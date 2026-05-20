@@ -12,7 +12,7 @@
 
 Industry 4.0 and digital twin technology promise transformative outcomes for manufacturers — but the reality for most small and medium enterprises (SMEs) is that full-scale implementation is out of reach. Enterprise platforms like Siemens MindSphere, PTC ThingWorx, or cloud-based AI services carry six-figure implementation costs, ongoing licensing fees, and a dependency on sending sensitive production data to external servers.
 
-**OPDS-AI is a targeted, low-cost alternative built for SMEs who want the core capability — not the full enterprise platform.**
+## OPDS-AI is a targeted, low-cost alternative built for SMEs who want the core capability — not the full enterprise platform.##
 
 It delivers the most valuable slice of Industry 4.0: a local AI that monitors machine health, predicts failures before they happen, and answers plain-English questions from engineers — all running on hardware the business may already own, with zero cloud dependency and zero software licensing cost.
 
