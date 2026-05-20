@@ -5,23 +5,17 @@
 
 ---
 
-## Screenshots
-
-| Grafana KPI Dashboard | Metabase Predictive Maintenance |
-|---|---|
-| ![Grafana](docs/screenshots/grafana-kpi.png) | ![Metabase](docs/screenshots/metabase-predictive.png) |
-
-| OpenWebUI — LLM with Real Data | FastAPI Tool Server |
-|---|---|
-| ![OpenWebUI](docs/screenshots/openwebui-tool-response.png) | ![FastAPI](docs/screenshots/fastapi-tools.png) |
-
----
-
 ## What This Is
 
-OPDS-AI is a proof-of-concept edge AI system built for industrial decision support. An engineer types a plain-English question — *"Which machines have the highest tool wear right now?"* — and the LLM queries the live machine historian database and returns a data-backed answer with source citations. No hallucination. No cloud API calls. No latency from an external service.
+Industry 4.0 and digital twin technology promise transformative outcomes for manufacturers — but the reality for most small and medium enterprises (SMEs) is that full-scale implementation is out of reach. Enterprise platforms like Siemens MindSphere, PTC ThingWorx, or cloud-based AI services carry six-figure implementation costs, ongoing licensing fees, and a dependency on sending sensitive production data to external servers.
 
-The entire stack runs on a single edge PC with AMD GPUs, containerised with Docker, and fully reproducible.
+**OPDS-AI is a targeted, low-cost alternative built for SMEs who want the core capability — not the full enterprise platform.**
+
+It delivers the most valuable slice of Industry 4.0: a local AI that monitors machine health, predicts failures before they happen, and answers plain-English questions from engineers — all running on hardware the business may already own, with zero cloud dependency and zero software licensing cost.
+
+An engineer types *"Which machines have the highest tool wear right now?"* — the system queries the live machine historian database and returns a data-backed answer with source citations. No dashboard hunting. No SQL knowledge required. No data leaving the building.
+
+This is not a cut-down version of something bigger. It is a deliberate, right-sized implementation of the capabilities that deliver the most ROI for a shopfloor environment: **machine monitoring, predictive maintenance, and natural language decision support** — fully on-premise, fully open source, deployable on a single edge PC.
 
 ---
 
@@ -36,19 +30,21 @@ The entire stack runs on a single edge PC with AMD GPUs, containerised with Dock
 | **KPI Dashboard** | Grafana | Port 3000 — 5-panel live dashboard, 30s auto-refresh |
 | **BI Dashboard** | Metabase | Port 3001 — predictive maintenance analytics |
 | **Data Simulator** | Python | Inserts realistic machine readings every 2 seconds |
-| **GPU Stack** | AMD ROCm 7.2.2 | Both GPUs detected — gfx1100 architecture |
+| **GPU Stack** | AMD ROCm 7.2.2 | gfx1100 architecture |
 
 ---
 
-## Hardware
+## Minimum Hardware Requirements
 
-| Component | Spec |
-|---|---|
-| CPU / Board | AMD X570-Taichi |
-| GPU (primary) | AMD RX 7900 XTX × 2 (24GB VRAM each) |
-| RAM | 64GB |
-| OS | Ubuntu 24.04 LTS |
-| Mini PC (portable) | RX 7800 XT 16GB eGPU — same Docker stack validated |
+| Component | Minimum | Notes |
+|---|---|---|
+| **GPU** | AMD RX 7800 XT 16GB (or equivalent NVIDIA) | 16GB VRAM required for qwen2.5:14b at 17GB — RX 7900 XTX 24GB recommended |
+| **RAM** | 32GB | 64GB recommended for comfortable headroom |
+| **Storage** | 50GB free | ~9GB model + Docker images + database |
+| **OS** | Ubuntu 24.04 LTS | Required for ROCm 7.2+ compatibility |
+| **CPU** | Any modern x86-64 | GPU does the heavy lifting — CPU is not the bottleneck |
+
+> Validated on: AMD RX 7900 XTX × 2 (edge PC) and AMD RX 7800 XT 16GB eGPU (mini PC) — same Docker stack runs on both.
 
 ---
 
@@ -90,6 +86,16 @@ Engineer / Supervisor
 
 The LLM calls these endpoints as tools — every answer is grounded in real database data. **Zero hallucination validated** — 339 failures confirmed via LLM tool call, exact match to direct SQL query.
 
+![FastAPI Tool Server](docs/screenshots/fastapi-tools.png)
+
+---
+
+## OpenWebUI — Natural Language Queries with Citations
+
+An engineer asks a plain-English question. The LLM calls the FastAPI tool, retrieves live data from MySQL, and returns a grounded answer with a **"1 Source"** citation badge — proof the answer came from real data, not model memory.
+
+![OpenWebUI LLM Response](docs/screenshots/openwebui-tool-response.png)
+
 ---
 
 ## Grafana Dashboard — 5 Panels
@@ -104,6 +110,8 @@ The LLM calls these endpoints as tools — every answer is grounded in real data
 
 Auto-refresh: 30 seconds. Accessible from tablets on the same LAN.
 
+![Grafana KPI Dashboard](docs/screenshots/grafana-kpi.png)
+
 ---
 
 ## Metabase Dashboard — 4 Panels
@@ -114,6 +122,8 @@ Auto-refresh: 30 seconds. Accessible from tablets on the same LAN.
 | Tool Wear Distribution | Histogram (8 bins, 0–253 min) |
 | Machines Approaching Failure | Table with Risk Level column |
 | Tool Wear Trend — Last 500 Readings | Time series line chart |
+
+![Metabase Predictive Maintenance](docs/screenshots/metabase-predictive.png)
 
 ---
 
