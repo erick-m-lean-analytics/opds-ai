@@ -7,6 +7,9 @@
 
 ## What This Is
 
+![Industry 4.0 Edge AI](docs/screenshots/industry40-hero.png)
+*Traditional Industry 4.0 connects machines to cloud platforms for remote analytics and storage. OPDS-AI delivers the core capability — machine monitoring, predictive maintenance, and AI decision support — entirely on-premise, with no cloud dependency for real-time operations. Cloud integration remains an option for batch reporting, long-term trend analysis, or executive dashboards, but it is never a requirement. The shopfloor keeps running and the AI keeps working whether the internet is up or not.*
+
 Industry 4.0 and digital twin technology promise transformative outcomes for manufacturers — but the reality for most small and medium enterprises (SMEs) is that full-scale implementation is out of reach. Enterprise platforms like Siemens MindSphere, PTC ThingWorx, or cloud-based AI services carry six-figure implementation costs, ongoing licensing fees, and a dependency on sending sensitive production data to external servers.
 
 **OPDS-AI is a targeted, low-cost alternative built for SMEs who want the core capability — not the full enterprise platform.**
