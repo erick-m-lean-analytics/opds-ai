@@ -28,7 +28,7 @@ This is not a cut-down version of something bigger. It is a deliberate, right-si
 |---|---|---|
 | **LLM Inference** | Ollama + qwen2.5:14b | Native install, ROCm GPU acceleration, 100% GPU, 17GB VRAM |
 | **Chat Interface** | OpenWebUI | Port 8080 — tool-calling enabled, citation badges |
-| **Tool Server** | FastAPI | Port 8001 — 5 tools exposing MySQL historian data to the LLM |
+| **Tool Server** | FastAPI | Port 8001 — 6 tools exposing MySQL historian data and OR optimisation to the LLM |
 | **Historian DB** | MySQL 8.0 | Port 3306 — 10,000 row AI4I predictive maintenance dataset |
 | **KPI Dashboard** | Grafana | Port 3000 — 5-panel live dashboard, 30s auto-refresh |
 | **BI Dashboard** | Metabase | Port 3001 — predictive maintenance analytics |
@@ -86,8 +86,9 @@ Engineer / Supervisor
 | `GET /get_failure_breakdown` | Failure counts by type (TWF, HDF, PWF, OSF, RNF) |
 | `GET /get_high_risk_machines` | Machines with tool wear > 200 min, ordered by risk |
 | `GET /get_temperature_stats` | Average air and process temperatures across all machines |
+| `GET /optimize_maintenance_schedule` | Runs a HiGHS/PuLP linear programming solver against live historian data — generates a risk-prioritised maintenance schedule across a configurable planning horizon, respecting daily technician capacity constraints |
 
-The LLM calls these endpoints as tools — every answer is grounded in real database data. **Zero hallucination validated** — 339 failures confirmed via LLM tool call, exact match to direct SQL query.
+The LLM calls these endpoints as tools — every answer is grounded in real database data. Zero hallucination validated — 339 failures confirmed via LLM tool call, exact match to direct SQL query. The OR solver endpoint pulls live machine data, runs constraint-based optimisation, and returns a fully scheduled maintenance plan — 30 high-risk machines scheduled across 7 days, respecting a 5-machine daily capacity limit.
 
 ![FastAPI Tool Server](docs/screenshots/fastapi-tools.png)
 
@@ -95,9 +96,12 @@ The LLM calls these endpoints as tools — every answer is grounded in real data
 
 ## OpenWebUI — Natural Language Queries with Citations
 
-An engineer asks a plain-English question. The LLM calls the FastAPI tool, retrieves live data from MySQL, and returns a grounded answer with a **"1 Source"** citation badge — proof the answer came from real data, not model memory.
+An engineer asks a plain-English question. The LLM calls the FastAPI tool, retrieves live data from MySQL, and returns a grounded answer with a "1 Source" citation badge — proof the answer came from real data, not model memory.
+Beyond simple queries, the system can generate a full operations research-optimised maintenance schedule — the LLM calls the /optimize_maintenance_schedule endpoint, which runs a PuLP linear programming solver against live historian data and returns a risk-prioritised schedule across a configurable planning horizon, respecting daily technician capacity constraints. 30 high-risk machines scheduled across 7 days, zero manual planning required.
 
 ![OpenWebUI LLM Response](docs/screenshots/openwebui-tool-response.png)
+
+![OpenWebUI LLM Response](docs/screenshots/openwebui-or-scheduler.png)
 
 ---
 
